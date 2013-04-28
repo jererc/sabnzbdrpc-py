@@ -1,0 +1,23 @@
+Sabnzbd python bindings.
+
+
+Example:
+
+    from sabnzbdrpc import Sabnzbd
+
+    client = Sabnzbd('192.168.1.123', port=8080,
+            api_key='0123456789abcdef0123456789abcdef')
+
+    # Add a NZB file to the queue
+    file = 'my_file.nzb'
+    id = client.add_nzb(file)
+
+    # Get the added NZB info
+    print client.get_nzb(id)
+
+    # List the queued NZBs
+    for nzb in client.list_nzbs():
+        print nzb
+
+    # Remove the added NZB
+    client.remove_nzb(id)
