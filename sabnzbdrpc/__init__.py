@@ -50,9 +50,9 @@ class Sabnzbd(object):
             if nzb['nzo_id'] == id:
                 return nzb
 
-    def get_nzb(self, id, history=False):
+    def get_nzb(self, id, history=False, include_files=False):
         res = self._get_nzb(id, history=history)
-        if res:
+        if res and include_files:
             files = self._send(mode='get_files', value=id)
             if files.get('files'):
                 res.update(files)
@@ -62,7 +62,8 @@ class Sabnzbd(object):
         res = self._send(mode='get_config')
         return res.get('config', {})
 
-    def remove_nzb(self, id, history=False):
+    def remove_nzb(self, id, history=False, delete_files=False):
         mode = 'history' if history else 'queue'
-        self._send(mode=mode, name='delete', value=id)
+        self._send(mode=mode, name='delete', value=id,
+                del_files=delete_files)
         return True
