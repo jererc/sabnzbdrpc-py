@@ -9,7 +9,7 @@ import requests
 logger = logging.getLogger(__name__)
 
 
-class ApiError(Exception): pass
+class SabnzbdError(Exception): pass
 
 
 class Sabnzbd(object):
@@ -27,12 +27,12 @@ class Sabnzbd(object):
         try:
             response = requests.get(url)
         except Exception, e:
-            raise ApiError('failed to get %s: %s' % (url, str(e)))
+            raise SabnzbdError('failed to get %s: %s' % (url, str(e)))
         if response.status_code != requests.codes.ok:
-            raise ApiError('failed to get %s: %s' % (url, response.status_code))
+            raise SabnzbdError('failed to get %s: %s' % (url, response.status_code))
         res = json.loads(response.content)
         if not res.get('status', True):
-            raise ApiError('failed to get %s: %s' % (url, res['error']))
+            raise SabnzbdError('failed to get %s: %s' % (url, res['error']))
         return res
 
     def add_nzb(self, file, pp=3, priority=0):
@@ -40,7 +40,7 @@ class Sabnzbd(object):
                 pp=pp, priority=priority)
         id = res['nzo_ids'][0]
         if not id:
-            raise ApiError('failed to add nzb %s' % file)
+            raise SabnzbdError('failed to add nzb %s' % file)
         return id
 
     def list_nzbs(self, history=False):
