@@ -24,7 +24,10 @@ class Sabnzbd(object):
         info['output'] = 'json'
 
         url = '%s?%s' % (self.base_url, urlencode(info))
-        response = requests.get(url)
+        try:
+            response = requests.get(url)
+        except Exception, e:
+            raise ApiError('failed to get %s: %s' % (url, str(e)))
         if response.status_code != requests.codes.ok:
             raise ApiError('failed to get %s: %s' % (url, response.status_code))
         res = json.loads(response.content)
