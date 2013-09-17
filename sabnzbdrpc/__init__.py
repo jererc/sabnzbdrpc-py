@@ -2,7 +2,7 @@ import json
 from urllib import urlencode
 import logging
 
-logging.getLogger('requests').setLevel(logging.ERROR)
+logging.getLogger('urllib3').setLevel(logging.ERROR)
 import requests
 
 
